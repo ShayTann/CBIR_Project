@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title> CBIR Web APP</title>
+{% endblock %}
+
+{% block body %}
+<h2> This is the content result page </h2>
+Image Input :  
+<img src="{{ url_for('static',filename='img/uploads/'+input_file)}}">
+
+
+{% endblock %}
