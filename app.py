@@ -13,6 +13,7 @@ import cv2
 
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 1
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 db = SQLAlchemy(app)
 
@@ -55,7 +56,6 @@ def index():
             else : 
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config['IMAGE_UPLOADS'],filename))
-                copyfile(os.path.join(app.config['IMAGE_UPLOADS'],filename),os.path.join(app.config['IMAGE_RESULTS'],filename)) #DELETE THIS LATER USELESS
                 print("Image (",filename,") Saved")
                 link = '/results/'+image.filename
                 print("You'll be redirected to  ",link)
@@ -75,13 +75,25 @@ def results(filename):
     #Search for similairs pictures using the searcher.py
     searcher = Searcher(os.path.join(app.config['IMAGE_INDEX'],"index.csv"))
     results = searcher.search(features)
-
-    for (score,resultID) in results : 
+    paths_results = []
+    for i,(score,resultID) in enumerate(results) : 
     #Load the result image 
-        print(resultID)
+        print(i,": ",resultID)
+        newfile = str(i+1)+".jpg"
+        paths_results.append(newfile)
+        copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
+        # print(os.path.join(app.config['IMAGE_RESULTS'],(str(i+1),'.jpg')))
 
+    return render_template('result.html',input_file=input_file,paths_results=paths_results)
 
-    return render_template('result.html',input_file=input_file)
+# No caching at all for API endpoints.
+@app.after_request
+def add_header(response):
+    # response.cache_control.no_store = True
+    if 'Cache-Control' not in response.headers:
+        response.headers['Cache-Control'] = 'no-store'
+    return response
 
 if __name__ == "__main__":
     app.run(debug=True)
+    
