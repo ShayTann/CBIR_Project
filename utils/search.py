@@ -1,4 +1,6 @@
 from colordescriptor import ColorDescriptor
+from texturedescriptor import TextureDescriptor
+from fourierdescriptor import ShapeDescriptor
 from searcher import Searcher
 import argparse
 import cv2
@@ -11,10 +13,14 @@ ap.add_argument("-r","--result-path",required = True , help="Path to the result 
 args = vars(ap.parse_args())
 
 cd = ColorDescriptor((8,12,3)) #Use same number of bins in the index.py
+td = TextureDescriptor()
+sd = ShapeDescriptor()
 
 #Load the given image and describe it
 query = cv2.imread(args["query"])
 features = cd.describe(query)
+features = np.concatenate([features, td.lbp(image_gry)])
+features = np.concatenate([features, sd.extractFeatures(image_gry)])
 
 #Search for similairs pictures using the searcher.py
 searcher = Searcher(args["index"])

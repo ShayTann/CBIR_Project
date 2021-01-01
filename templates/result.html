@@ -10,9 +10,11 @@ Image Input :
 <img src="{{ url_for('static',filename='img/uploads/'+input_file)}}">
 <br>
 Result Images : 
+
 {% for path in paths_results %}
 
 <img class="img-fluid" style="width: 200px;height:200px;" src="{{ url_for('static',filename='img/results/'+path)}}">
+
 {% endfor %}
 
 {% endblock %}

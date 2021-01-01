@@ -6,10 +6,12 @@ from werkzeug.utils import secure_filename
 from shutil import copyfile
 #Import for processing : 
 from utils.colordescriptor import ColorDescriptor
+from utils.fourierdescriptor import ShapeDescriptor
+from utils.texturedescriptor import TextureDescriptor
 from utils.searcher import Searcher
 import argparse
 import cv2
-
+import numpy as np
 
 
 app = Flask(__name__)
@@ -67,11 +69,14 @@ def index():
 def results(filename):
     input_file = filename
     cd = ColorDescriptor((8,12,3)) #Use same number of bins in the index.py
-
+    td = TextureDescriptor()
+    sd = ShapeDescriptor()
     #Load the given image and describe it
     query = cv2.imread(os.path.join(app.config['IMAGE_UPLOADS'],filename))
+    query_grey = cv2.cvtColor(query, cv2.COLOR_BGR2GRAY)
     features = cd.describe(query)
-
+    features = np.concatenate([features, td.lbp(query_grey)])
+    features = np.concatenate([features, sd.extractFeatures(query_grey)])
     #Search for similairs pictures using the searcher.py
     searcher = Searcher(os.path.join(app.config['IMAGE_INDEX'],"index.csv"))
     results = searcher.search(features)
