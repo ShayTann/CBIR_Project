@@ -9,7 +9,20 @@
 
 <form action="/" method="POST" enctype="multipart/form-data">
     <input oninput="filesize(this);" type="file" name="image" id="image">
-    <button type="submit" class="btn btn-primary">Search !</button>
+    <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Color" name = "mycheckbox" checked/>
+        <label class="form-check-label" for="inlineCheckbox1">Color Descriptor</label>
+      </div>
+      
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Texture" name = "mycheckbox" />
+        <label class="form-check-label" for="inlineCheckbox2">Texture descriptor</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Shape" name = "mycheckbox" />
+        <label class="form-check-label" for="inlineCheckbox3">Shape descriptor</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Search !</button>
 </form>
 
 

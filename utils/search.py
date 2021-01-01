@@ -6,7 +6,9 @@ import argparse
 import cv2
 
 ap = argparse.ArgumentParser()
-ap.add_argument("-i","--index",required = True , help="Path to where the computed index will be stored")
+ap.add_argument("-c","--color",required = True , help="Path to where the computed index will be stored")
+ap.add_argument("-t","--texture",required = True , help="Path to where the computed index will be stored")
+ap.add_argument("-s","--shape",required = True , help="Path to where the computed index will be stored")
 ap.add_argument("-q","--query",required = True , help="Path to the query image")
 ap.add_argument("-r","--result-path",required = True , help="Path to the result path")
 
@@ -18,13 +20,16 @@ sd = ShapeDescriptor()
 
 #Load the given image and describe it
 query = cv2.imread(args["query"])
-features = cd.describe(query)
-features = np.concatenate([features, td.lbp(image_gry)])
-features = np.concatenate([features, sd.extractFeatures(image_gry)])
+query_grey = cv2.cvtColor(query, cv2.COLOR_BGR2GRAY)
+features_color = cd.describe(query)
+feature_texture = td.lbp(query_grey)
+feature_shape = sd.extractFeatures(query_grey)
+#features = np.concatenate([features, td.lbp(image_gry)])
+#features = np.concatenate([features, sd.extractFeatures(image_gry)])
 
 #Search for similairs pictures using the searcher.py
-searcher = Searcher(args["index"])
-results = searcher.search(features)
+searcher = Searcher(args["color"],args["texture"],args["shape"])
+results = searcher.search(features_color,feature_texture,feature_shape)
 
 #Display the given image : 
 cv2.namedWindow('image',cv2.WINDOW_NORMAL)

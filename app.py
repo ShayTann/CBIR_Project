@@ -44,6 +44,10 @@ def allowed_image_filesize(filesize):
 @app.route('/',methods=['POST','GET'])
 def index():
     if request.method == 'POST':
+        descriptors_list = request.form.getlist('mycheckbox')
+        descriptors = ''
+        for descrip in descriptors_list:
+            descriptors += str(descrip)+','
         if request.files :
             if not allowed_image_filesize(request.cookies.get("filesize")):
                 print("Size of image to big")
@@ -59,14 +63,14 @@ def index():
                 filename = secure_filename(image.filename)
                 image.save(os.path.join(app.config['IMAGE_UPLOADS'],filename))
                 print("Image (",filename,") Saved")
-                link = '/results/'+image.filename
+                link = '/results/'+image.filename+'/'+descriptors[:-1]
                 print("You'll be redirected to  ",link)
             return redirect(link)
     else :
         return render_template('index.html')
 
-@app.route('/results/<filename>',methods=['POST','GET'])
-def results(filename):
+@app.route('/results/<filename>/<descriptors>',methods=['POST','GET'])
+def results(filename,descriptors):
     input_file = filename
     cd = ColorDescriptor((8,12,3)) #Use same number of bins in the index.py
     td = TextureDescriptor()
@@ -74,12 +78,14 @@ def results(filename):
     #Load the given image and describe it
     query = cv2.imread(os.path.join(app.config['IMAGE_UPLOADS'],filename))
     query_grey = cv2.cvtColor(query, cv2.COLOR_BGR2GRAY)
-    features = cd.describe(query)
-    features = np.concatenate([features, td.lbp(query_grey)])
-    features = np.concatenate([features, sd.extractFeatures(query_grey)])
+    features_color = cd.describe(query)
+    feature_texture = td.lbp(query_grey)
+    feature_shape = sd.extractFeatures(query_grey)
     #Search for similairs pictures using the searcher.py
-    searcher = Searcher(os.path.join(app.config['IMAGE_INDEX'],"index.csv"))
-    results = searcher.search(features)
+    searcher = Searcher(os.path.join(app.config['IMAGE_INDEX'],"color.csv"),os.path.join(app.config['IMAGE_INDEX'],"texture.csv"),os.path.join(app.config['IMAGE_INDEX'],"shapes.csv"))
+    descriptors = descriptors.split(',')
+    print(descriptors)
+    results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors)
     paths_results = []
     for i,(score,resultID) in enumerate(results) : 
     #Load the result image 
