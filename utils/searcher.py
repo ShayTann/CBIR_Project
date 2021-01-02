@@ -7,7 +7,7 @@ class Searcher :
         self.indexPath_texture = indexPath_texture
         self.indexPath_shape = indexPath_shape
     # **Main function of our PROJECT**
-    def search(self,queryFeatures_color,queryFeatures_texture,queryFeatures_shape,limit=10,descriptors=['Color','Texture','Shape']): 
+    def search(self,queryFeatures_color,queryFeatures_texture,queryFeatures_shape,limit=10,descriptors=['Color','Texture','Shape'],w=[1/3,1/3,1/3]): 
         results = {} # Initialize the output dictionary
         with open(self.indexPath_color) as  f1,open(self.indexPath_texture) as  f2,open(self.indexPath_shape) as  f3 :
             reader_color = csv.reader(f1) # Read the csv File
@@ -20,16 +20,16 @@ class Searcher :
                     if descriptor == 'Color':
                         features_color = [float(x) for x in row_color[1:]]
                         d_color = self.chi2_distance(features_color,queryFeatures_color)
-                        d_t += d_color
+                        d_t += d_color * w[0]
                     if descriptor == 'Texture':
                         features_texture = [float(x) for x in row_texture[1:]]
                         d_texture = self.chi2_distance(features_texture,queryFeatures_texture)
-                        d_t += d_texture
+                        d_t += d_texture * w[1]
                     if descriptor == 'Shape':
                         features_shape = [float(x) for x in row_shape[1:]]
                         d_shape = self.chi2_distance(features_shape,queryFeatures_shape)
-                        d_t += d_shape
-                results[row_color[0]] = d_t / len(descriptors) #Here row_color can be changed by texture or just the id of current picture
+                        d_t += d_shape * w[2]
+                results[row_color[0]] = d_t  #Here row_color can be changed by texture or just the id of current picture
         f1.close()
         f2.close()
         f3.close()

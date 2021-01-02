@@ -71,6 +71,11 @@ def index():
 
 @app.route('/results/<filename>/<descriptors>',methods=['POST','GET'])
 def results(filename,descriptors):
+    if request.method == 'POST':
+        print("In if condition")
+        print(request.form.getlist('checkgood'))
+        return 'Test'
+    
     input_file = filename
     cd = ColorDescriptor((8,12,3)) #Use same number of bins in the index.py
     td = TextureDescriptor()
@@ -90,7 +95,7 @@ def results(filename,descriptors):
     score_results = []
     for i,(score,resultID) in enumerate(results) : 
     #Load the result image 
-        print(i,": ",resultID)
+        #print(i,": ",resultID)
         newfile = str(i+1)+".jpg"
         paths_results.append(newfile)
         score_results.append(score)
