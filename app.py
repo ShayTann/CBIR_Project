@@ -9,6 +9,7 @@ from utils.colordescriptor import ColorDescriptor
 from utils.fourierdescriptor import ShapeDescriptor
 from utils.texturedescriptor import TextureDescriptor
 from utils.searcher import Searcher
+from utils.generator import generate_weights,reset_weights
 import argparse
 import cv2
 import numpy as np
@@ -26,7 +27,7 @@ app.config['IMAGE_INDEX'] = "F://MASTER MBD S3//Analysis Mining and indexing in 
 app.config["ALLOWED_IMAGE_EXTENSIONS"] = ['PNG','JPG','JPEG']
 app.config["MAX_IMAGE_SIZE"] = 0.5 * 1024 * 1024 #In bytes
 
-def allowed_image(filename) : 
+def allowed_image(filename) : #For security reason we're checking if its is an allowed image extension
     if not "." in filename :
         return False
     ext = filename.rsplit(".",1)[1]
@@ -34,7 +35,7 @@ def allowed_image(filename) :
         return True 
     else :
         return False
-def allowed_image_filesize(filesize):
+def allowed_image_filesize(filesize): #Check the size of the image
     if int(filesize) < app.config["MAX_IMAGE_SIZE"] : 
         return True
     else :
@@ -43,28 +44,28 @@ def allowed_image_filesize(filesize):
 
 @app.route('/',methods=['POST','GET'])
 def index():
+    reset_weights() #To empty the file weights.txt from old generated weights
     if request.method == 'POST':
-        descriptors_list = request.form.getlist('mycheckbox')
-        descriptors = ''
+        descriptors_list = request.form.getlist('mycheckbox') #Get the seletected descriptors
+        descriptors = '' #Initializing
         for descrip in descriptors_list:
-            descriptors += str(descrip)+','
+            descriptors += str(descrip)+',' #Stock descriptors in a string to pass it as an argument 
         if request.files :
-            if not allowed_image_filesize(request.cookies.get("filesize")):
+            if not allowed_image_filesize(request.cookies.get("filesize")): #If the input image size is to big
                 print("Size of image to big")
                 return redirect(request.url)
             image = request.files['image']
-            if image.filename == "":
+            if image.filename == "": #If the input image has no name
                 print("Image Must have a filename")
                 return redirect(request.url)
-            if not allowed_image(image.filename):
+            if not allowed_image(image.filename): #Case extension of the input image not allowed
                 print("Extension is not allowed")
                 return redirect(request.url)
             else : 
                 filename = secure_filename(image.filename)
-                image.save(os.path.join(app.config['IMAGE_UPLOADS'],filename))
+                image.save(os.path.join(app.config['IMAGE_UPLOADS'],filename)) #Saving the input image to upload file
                 print("Image (",filename,") Saved")
                 link = '/results/'+image.filename+'/'+descriptors[:-1]
-                print("You'll be redirected to  ",link)
             return redirect(link)
     else :
         return render_template('index.html')
@@ -76,8 +77,8 @@ def results(filename,descriptors):
     td = TextureDescriptor()
     sd = ShapeDescriptor()
     #Load the given image and describe it
-    query = cv2.imread(os.path.join(app.config['IMAGE_UPLOADS'],filename))
-    query_grey = cv2.cvtColor(query, cv2.COLOR_BGR2GRAY)
+    query = cv2.imread(os.path.join(app.config['IMAGE_UPLOADS'],filename)) #Read the input image
+    query_grey = cv2.cvtColor(query, cv2.COLOR_BGR2GRAY) #Get the gray image to run it for Texture and shape descriptor
     features_color = cd.describe(query)
     feature_texture = td.lbp(query_grey)
     feature_shape = sd.extractFeatures(query_grey)
@@ -85,15 +86,16 @@ def results(filename,descriptors):
     searcher = Searcher(os.path.join(app.config['IMAGE_INDEX'],"color.csv"),os.path.join(app.config['IMAGE_INDEX'],"texture.csv"),os.path.join(app.config['IMAGE_INDEX'],"shapes.csv"))
     descriptors = descriptors.split(',')
     print(descriptors)
-    if request.method == 'POST':
-        good_list = request.form.getlist('checkgood')
-        good_path = []
-        good_score = []
+    if request.method == 'POST': # In case we're in search again 
+        good_list = request.form.getlist('checkgood') #Get the good result from the last time
+        good_path = [] #To stock path of the good result from the last time
+        good_score = [] #To stock path of the score of good result from the last time
         for elemen in good_list : 
-            good_path.append(elemen.split(',')[0])
+            good_path.append(elemen.split(',')[0]) #Because good_list was like : ['1.png,0.9556','3.jpg,0.0545454']
             good_score.append(elemen.split(',')[1]) 
-
-        results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors,w=[1/4,1/2,1/4])
+        weights = generate_weights() #This function from generator.py that generator new weights for out searcher
+        print("New weights : "+str(weights))
+        results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors,w=weights)
         paths_results = []
         score_results = []
         for i,(score,resultID) in enumerate(results) : 
@@ -102,7 +104,8 @@ def results(filename,descriptors):
             newfile = str(i+1)+".jpg"
             paths_results.append(newfile)
             score_results.append(score)
-            copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
+            if newfile not in good_path :
+                copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
             # print(os.path.join(app.config['IMAGE_RESULTS'],(str(i+1),'.jpg')))
         good_path.extend(paths_results)
         good_score.extend(score_results)
