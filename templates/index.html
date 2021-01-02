@@ -1,33 +1,19 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+{% block head %}
+
 
   <title>CBIR</title>
 
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
-  <link href="//fonts.googleapis.com/css?family=Spartan:400,500,600,700,900&display=swap" rel="stylesheet">
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
 
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="{{ url_for('static',filename='css/style-starter.css')}}">
-  <link rel="stylesheet" href="{{ url_for('static',filename='css/dropify.min.css')}}">
- 
-</head>
+  {% endblock %}
 
-<body>
+  {% block body %}
 <header id="site-header" class="fixed-top">
   <section class="w3l-header-4">
       <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light">
-              <h1><a class="navbar-brand" href="index.html"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
+              <h1><a class="navbar-brand" href="/"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
                       CBIR<span>Project</span>
                   </a></h1>
               <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -39,14 +25,14 @@ Author URL: http://w3layouts.com
               <div class="collapse navbar-collapse" id="navbarNav">
                   <ul class="navbar-nav">
                       <li class="nav-item active">
-                          <a class="nav-link" href="index.html">Home </a>
+                          <a class="nav-link" href="/">Home </a>
                       </li>
                       
                   </ul>
                   <ul class="navbar-nav search-right mt-lg-0 mt-2">
                       <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">
                               <span class="fa fa-search" aria-hidden="true"></span></a></li>
-                      <li class="nav-item"><a href="contact.html"
+                      <li class="nav-item"><a href="/contact"
                               class="btn btn-primary d-none d-lg-block btn-style mr-2">Contact Us</a></li>
                   </ul>
 
@@ -275,6 +261,7 @@ Author URL: http://w3layouts.com
     <button onclick="topFunction()" id="movetop" title="Go to top">
       <span class="fa fa-angle-up"></span>
     </button>
+    {% block script %} 
     <script>
       // When the user scrolls down 20px from the top of the document, show the button
       window.onscroll = function () {
@@ -302,18 +289,18 @@ Author URL: http://w3layouts.com
     </script>
     <!-- /move top -->
   </footer>
-
-  <script src="assets/js/jquery-3.3.1.min.js"></script> <!-- Common jquery plugin -->
-
-  <script src="assets/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
+  
+  <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script> <!-- Common jquery plugin -->
+  
+  <script type="text/javascript" src="{{ url_for('static',filename='js/theme-change.js')}}"></script><!-- theme switch js (light and dark)-->
 
     <!-- libhtbox -->
-    <script src="assets/js/lightbox-plus-jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/lightbox-plus-jquery.min.js')}}"></script>
     <!-- libhtbox -->
     
   <!-- stats number counter-->
-  <script src="assets/js/jquery.waypoints.min.js"></script>
-  <script src="assets/js/jquery.countup.js"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.waypoints.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='js/jquery.countup.js')}}"></script>
   <script>
     $('.counter').countUp();
   </script>
@@ -360,10 +347,10 @@ Author URL: http://w3layouts.com
   <!-- //disable body scroll which navbar is in active -->
   
   <!--bootstrap-->
-  <script src="assets/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js')}}"></script>
 
   <!--Dropify-->
-  <script src="assets/js/dropify.js"></script>
-  </body>
+  <script type="text/javascript" src="{{ url_for('static',filename='js/dropify.js')}}"></script>
+    {% endblock %}
+  {% endblock %} 
 
-  </html>

@@ -1,32 +1,25 @@
-<!--
-Author: W3layouts
-Author URL: http://w3layouts.com
--->
-<!doctype html>
-<html lang="en">
+{% extends 'base.html' %}
 
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <title>Corpolink a Corporate Category Bootstrap Responsive Website Template - Contact : W3Layouts</title>
+{% block head %}
 
 
-  <link href="//fonts.googleapis.com/css?family=Spartan:400,500,600,700,900&display=swap" rel="stylesheet">
-  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+  <title>Contact</title>
 
-  <!-- Template CSS -->
-  <link rel="stylesheet" href="assets/css/style-starter.css">
-</head>
 
-<body>
+  {% endblock %}
+
+
+
+
+
+
+{% block body %}
   <header id="site-header" class="fixed-top">
     <section class="w3l-header-4">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
-                <h1><a class="navbar-brand" href="index.html"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
-                        FST<span>Project</span>
+                <h1><a class="navbar-brand" href="/"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
+                        CBIR<span>Project</span>
                     </a></h1>
                 <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,14 +30,14 @@ Author URL: http://w3layouts.com
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="index.html">Home </a>
+                            <a class="nav-link" href="/">Home </a>
                         </li>
                         
                     </ul>
                     <ul class="navbar-nav search-right mt-lg-0 mt-2">
                         <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">
                                 <span class="fa fa-search" aria-hidden="true"></span></a></li>
-                        <li class="nav-item"><a href="contact.html"
+                        <li class="nav-item"><a href="#uralreadyhere"
                                 class="btn btn-primary d-none d-lg-block btn-style mr-2">Contact Us</a></li>
                     </ul>
   
@@ -202,92 +195,93 @@ Author URL: http://w3layouts.com
         </div>
       </div>
     </div>
-    <!-- move top -->
-    <button onclick="topFunction()" id="movetop" title="Go to top">
-      <span class="fa fa-angle-up"></span>
-    </button>
-    <script>
-      // When the user scrolls down 20px from the top of the document, show the button
-      window.onscroll = function () {
-        scrollFunction()
-      };
+    {% block script %} 
+          <!-- move top -->
+          <button onclick="topFunction()" id="movetop" title="Go to top">
+            <span class="fa fa-angle-up"></span>
+          </button>
+          <script>
+            // When the user scrolls down 20px from the top of the document, show the button
+            window.onscroll = function () {
+              scrollFunction()
+            };
 
-      function scrollFunction() {
-        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-          document.getElementById("movetop").style.display = "block";
-        } else {
-          document.getElementById("movetop").style.display = "none";
-        }
-      }
+            function scrollFunction() {
+              if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+              } else {
+                document.getElementById("movetop").style.display = "none";
+              }
+            }
 
-      // When the user clicks on the button, scroll to the top of the document
-      function topFunction() {
-        document.body.scrollTop = 0;
-        document.documentElement.scrollTop = 0;
-      }
-    </script>
-    <!-- /move top -->
-  </footer>
+            // When the user clicks on the button, scroll to the top of the document
+            function topFunction() {
+              document.body.scrollTop = 0;
+              document.documentElement.scrollTop = 0;
+            }
+          </script>
+          <!-- /move top -->
+        </footer>
 
-  <script src="assets/js/jquery-3.3.1.min.js"></script> <!-- Common jquery plugin -->
+        <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script> <!-- Common jquery plugin -->
+        <!-- Common jquery plugin -->
 
-  <script src="assets/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
+        <script type="text/javascript" src="{{ url_for('static',filename='js/theme-change.js')}}"></script><!-- theme switch js (light and dark)-->
 
-    <!-- libhtbox -->
-    <script src="assets/js/lightbox-plus-jquery.min.js"></script>
-    <!-- libhtbox -->
-    
-  <!-- stats number counter-->
-  <script src="assets/js/jquery.waypoints.min.js"></script>
-  <script src="assets/js/jquery.countup.js"></script>
-  <script>
-    $('.counter').countUp();
-  </script>
-  <!-- //stats number counter -->
 
-  <!--/MENU-JS-->
-  <script>
-    $(window).on("scroll", function () {
-      var scroll = $(window).scrollTop();
+          <!-- libhtbox -->
+          <script type="text/javascript" src="{{ url_for('static',filename='js/lightbox-plus-jquery.min.js')}}"></script>
+          
+          <!-- stats number counter-->
+          <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.waypoints.min.js')}}"></script>
+          <script src="{{ url_for('static',filename='js/jquery.countup.js')}}"></script>
+          <script>
+            $('.counter').countUp();
+          </script>
+          <!-- //stats number counter -->
 
-      if (scroll >= 80) {
-        $("#site-header").addClass("nav-fixed");
-      } else {
-        $("#site-header").removeClass("nav-fixed");
-      }
-    });
 
-    //Main navigation Active Class Add Remove
-    $(".navbar-toggler").on("click", function () {
-      $("header").toggleClass("active");
-    });
-    $(document).on("ready", function () {
-      if ($(window).width() > 991) {
-        $("header").removeClass("active");
-      }
-      $(window).on("resize", function () {
-        if ($(window).width() > 991) {
-          $("header").removeClass("active");
-        }
-      });
-    });
-  </script>
-  <!--//MENU-JS-->
+        <!--/MENU-JS-->
+        <script>
+          $(window).on("scroll", function () {
+            var scroll = $(window).scrollTop();
 
-  <!-- disable body scroll which navbar is in active -->
-  <script>
-    $(function () {
-      $('.navbar-toggler').click(function () {
-        $('body').toggleClass('noscroll');
-      })
-    });
-  </script>
-  <!-- //disable body scroll which navbar is in active -->
-  
-  <!--bootstrap-->
-  <script src="assets/js/bootstrap.min.js"></script>
-  <!-- //bootstrap-->
+            if (scroll >= 80) {
+              $("#site-header").addClass("nav-fixed");
+            } else {
+              $("#site-header").removeClass("nav-fixed");
+            }
+          });
 
-  </body>
+          //Main navigation Active Class Add Remove
+          $(".navbar-toggler").on("click", function () {
+            $("header").toggleClass("active");
+          });
+          $(document).on("ready", function () {
+            if ($(window).width() > 991) {
+              $("header").removeClass("active");
+            }
+            $(window).on("resize", function () {
+              if ($(window).width() > 991) {
+                $("header").removeClass("active");
+              }
+            });
+          });
+        </script>
+        <!--//MENU-JS-->
 
-  </html>
+        <!-- disable body scroll which navbar is in active -->
+        <script>
+          $(function () {
+            $('.navbar-toggler').click(function () {
+              $('body').toggleClass('noscroll');
+            })
+          });
+        </script>
+        <!-- //disable body scroll which navbar is in active -->
+        
+        <!--bootstrap-->
+  <script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js')}}"></script>
+        <!-- //bootstrap-->
+    {% endblock %}
+  {% endblock %} 

@@ -99,6 +99,10 @@ def results(filename,descriptors):
 
     return render_template('result.html',input_file=input_file,results=zip(paths_results,score_results))
 
+# contact route
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 # No caching at all for API endpoints.
 @app.after_request
 def add_header(response):

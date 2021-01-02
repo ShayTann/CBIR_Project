@@ -1,10 +1,17 @@
 
 
 <head>
-    <link rel="stylesheet" href ="{{ url_for('static',filename='css/mdb.min.css')}}">
-    <link rel="stylesheet" href ="{{ url_for('static',filename='css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href ="{{ url_for('static',filename='css/style.css')}}">
-    <link rel="stylesheet" href ="{{ url_for('static',filename='css/custom.css')}}">
+   
+     <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">    
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+    <link href="//fonts.googleapis.com/css?family=Spartan:400,500,600,700,900&display=swap" rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style-starter.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/dropify.min.css')}}">
     {% block head %} {% endblock %}
     <a href="http://127.0.0.1:5000"> <h1 class="display-1"style="text-align:center">CBIR WEB APP </h1></a>
 </head>

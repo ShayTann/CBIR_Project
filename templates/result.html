@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
+{% extends 'base.html' %}
 
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/galery-starter.css')}}">
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style-starter.css')}}">
+{% block head %}
+   
+
+<link rel="stylesheet" href="{{ url_for('static',filename='css/galery-starter.css')}}">   
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
-  <body>
+
+    
+
+<title>Results</title>
+
+
+  {% endblock %}
+
+  {% block body %}
+  
     <header id="site-header" class="fixed-top">
       <section class="w3l-header-4">
           <div class="container">
               <nav class="navbar navbar-expand-lg navbar-light">
-                  <h1><a class="navbar-brand" href="index.html"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
+                  <h1><a class="navbar-brand" href="/"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
                           CBIR<span>Project</span>
                       </a></h1>
                   
@@ -25,14 +29,14 @@
                   <div class="collapse navbar-collapse" id="navbarNav">
                       <ul class="navbar-nav">
                           <li class="nav-item active">
-                              <a class="nav-link" href="index.html">Home </a>
+                              <a class="nav-link" href="/">Home </a>
                           </li>
                           
                       </ul>
                       <ul class="navbar-nav search-right mt-lg-0 mt-2">
                           <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">
                                   <span class="fa fa-search" aria-hidden="true"></span></a></li>
-                          <li class="nav-item"><a href="contact.html"
+                          <li class="nav-item"><a href="/contact"
                                   class="btn btn-primary d-none d-lg-block btn-style mr-2">Contact Us</a></li>
                       </ul>
     
@@ -86,21 +90,21 @@
       </div>
     </div>
 
+    {% block script %}
+        <script>
+          $(".gallery").magnificPopup({
+            delegate: 'a',
+            type: 'image',
+            gallery:{
+              enabled: true
+            }
+          });
+          $( ".btnn" ).click(function(){
+            alert('ba9i akahadmx')
 
-  <script>
-    $(".gallery").magnificPopup({
-      delegate: 'a',
-      type: 'image',
-      gallery:{
-        enabled: true
-      }
-    });
-    $( ".btnn" ).click(function(){
-      alert('ba9i akahadmx')
+          })
+          
+         </script>
+      {% endblock %}
+{% endblock %}
 
-    })
-    
-  </script>
-
-  </body>
-</html>
