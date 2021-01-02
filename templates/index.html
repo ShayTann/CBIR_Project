@@ -1,38 +1,369 @@
-{% extends 'base.html' %}
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+-->
+<!doctype html>
+<html lang="en">
 
-{% block head %}
-<title> CBIR Web APP</title>
-{% endblock %}
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-{% block body %}
-<h2> This is the content page </h2>
+  <title>CBIR</title>
 
-<form action="/" method="POST" enctype="multipart/form-data">
-    <input oninput="filesize(this);" type="file" name="image" id="image">
-    <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="Color" name = "mycheckbox" checked/>
-        <label class="form-check-label" for="inlineCheckbox1">Color Descriptor</label>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+  <link href="//fonts.googleapis.com/css?family=Spartan:400,500,600,700,900&display=swap" rel="stylesheet">
+  <link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800&display=swap" rel="stylesheet">
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/style-starter.css')}}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/dropify.min.css')}}">
+ 
+</head>
+
+<body>
+<header id="site-header" class="fixed-top">
+  <section class="w3l-header-4">
+      <div class="container">
+          <nav class="navbar navbar-expand-lg navbar-light">
+              <h1><a class="navbar-brand" href="index.html"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
+                      CBIR<span>Project</span>
+                  </a></h1>
+              <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav"
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="fa icon-expand fa-bars"></span>
+                  <span class="fa icon-close fa-times"></span>
+              </button>
+
+              <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav">
+                      <li class="nav-item active">
+                          <a class="nav-link" href="index.html">Home </a>
+                      </li>
+                      
+                  </ul>
+                  <ul class="navbar-nav search-right mt-lg-0 mt-2">
+                      <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">
+                              <span class="fa fa-search" aria-hidden="true"></span></a></li>
+                      <li class="nav-item"><a href="contact.html"
+                              class="btn btn-primary d-none d-lg-block btn-style mr-2">Contact Us</a></li>
+                  </ul>
+
+                  <!-- //toggle switch for light and dark theme -->
+                  <!-- search popup -->
+                  <div id="search" class="pop-overlay">
+                      <div class="popup">
+                          <form action="#" method="GET" class="d-sm-flex">
+                              <input type="search" placeholder="Rah makhedamx" name="search" required="required" autofocus>
+                              <button type="submit">Search</button>
+                              <a class="close" href="#url">&times;</a>
+                          </form>
+                      </div>
+                  </div>
+                  <!-- /search popup -->
+              </div>
+              <!-- toggle switch for light and dark theme -->
+              <div class="mobile-position">
+                  <nav class="navigation">
+                      <div class="theme-switch-wrapper">
+                          <label class="theme-switch" for="checkbox">
+                              <input type="checkbox" id="checkbox">
+                              <div class="mode-container">
+                                  <i class="gg-sun"></i>
+                                  <i class="gg-moon"></i>
+                              </div>
+                          </label>
+                      </div>
+                  </nav>
+              </div>
+          </nav>
       </div>
-      
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="Texture" name = "mycheckbox" />
-        <label class="form-check-label" for="inlineCheckbox2">Texture descriptor</label>
+  </section>
+</header>
+
+<!-- banner section -->
+<section id="home" class="w3l-banner py-5">
+    <div class="container py-lg-5 py-md-4">
+        <div class="row align-items-center">
+            <div class="col-lg-6 col-sm-12 mt-lg-0 mt-4">
+                <span class="title-small mb-2">About Project</span>
+                <h3 class="mb-2 title-big mb-4">Content-based image retrieval.</h3>
+                <p>A content image search system is a system by which multiple images are pulled from a large collection of images using visual content</p>
+                <div class="mt-sm-5 mt-4">
+                    <a class="btn btn-outline-primary btn-style mr-2" onclick="alert('hna ndiru xi link n rapport d projet')"> Learn more <span class="fa fa-chevron-right"></span></a>
+                    <a class="btn btn-primary btn-style" onclick="cbirStart()"  title="Go to top"> Get started </a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-8 col-sm-10 mt-lg-0 mt-5">
+                <div class="img-effect text-lg-center">
+                    <img src="{{ url_for('static',filename='images/banner.png')}}" alt="banner" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- //banner section -->
+<section  id="features" class="w3l-homeblock1">
+  <form action="/" method="POST" enctype="multipart/form-data">
+    <div class="w3-services-ab py-5">
+        <div class="container py-lg-5 py-md-4">
+            <span class="title-small text-center mb-2">Upload your Image</span>
+            <h3 class="title-big text-center mb-5">Pick the image you want to search</h3>
+            <div class="w3-services-grids">
+                <div class="row  w3-services-right-grid">
+                    <div class="col-lg-4">
+                        <img src="{{ url_for('static',filename='images/mobile.png')}}" alt="" class="img-fluid" />
+                    </div>
+                    <div class="col-lg-8 mt-lg-0 mt-5" style="background-color: white; border-radius: 5%;">
+                        <div class="fea-gd-vv row">
+                            <div class="col-md-12 mt-4">
+                                <input type="file" oninput="filesize(this);" class="dropify" name="image" id="image" />
+                            </div>
+                            <div class="col-md-8 mt-4">
+                                <div class="checkox-title ml-1">
+                                    <i class="far fa-list-alt"></i>
+                                    <span>Chose the descriptors</span>
+                                </div>
+                                <div class="card-body">
+                                      <div class="form-check form-check-inline">
+                                          <input class="form-check-input" checked type="checkbox" id="inlineCheckbox1" name ='mycheckbox' value="Color" style="  -webkit-appearance:checkbox;">
+                                          <label class="form-check-label" for="inlineCheckbox1">Color</label>
+                                        </div>
+                                        
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" checked type="checkbox" id="inlineCheckbox2" value="Texture" name='mycheckbox' style="  -webkit-appearance:checkbox;">
+                                          <label class="form-check-label" for="inlineCheckbox2">Texture</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                          <input class="form-check-input" checked type="checkbox" id="inlineCheckbox2" name='mycheckbox' value="Shape" style="  -webkit-appearance:checkbox;">
+                                          <label class="form-check-label" for="inlineCheckbox2">Forme</label>
+                                        </div>
+                                      
+                                  </div>
+                                
+                                
+                              
+                                  </div>
+                                  <div class="col-md-4 mt-4" style="right: 0;">
+                                    <button type="submit" class="btn btn-info btn-style">Search !</button>
+                                   
+                                  </div>
+                               </div>  
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</section>
+
+<!-- /bottom-grids-->
+<section class="w3l-bottom-grids-6 py-5">
+    <div class="container py-lg-5 py-md-4">
+        <span class="title-small text-center mb-2">Aout Us</span>
+        <h3 class="title-big text-center mb-5">Who we are ?</h3>
+        <div class="grids-area-hny main-cont-wthree-fea row">
+            <div class="col-lg-4 col-md-6 grids-feature">
+                <div class="area-box box-active">
+                    <img src="{{ url_for('static',filename='images/mellouk.png')}}" class="rounded" alt="mellouk" style="height: 100px; width: 100px;"> 
+                    <h4><a href="#mellouk" class="title-head">Mellouk Mohamed</a></h4>
+                    <p>MBD Student,second year.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 grids-feature mt-md-0 mt-4">
+                <div class="area-box box-active">
+                    <img src="{{ url_for('static',filename='images/khallouk.jpg')}}" class="rounded" alt="khallouk" style="height: 100px; width: 100px;"> 
+                    <h4><a href="#khallouk" class="title-head">Khallouk Achraf</a></h4>
+                    <p>SIM Student,second year.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 grids-feature mt-lg-0 mt-4">
+                <div class="area-box box-active">
+                    <img src="{{ url_for('static',filename='images/chbab.jpg')}}" class="rounded" alt="chbab" style="height: 100px; width: 100px;"> 
+                    <h4><a href="#chbab" class="title-head">Chbab Khalid</a></h4>
+                    <p>MBD Student,second year.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- //bottom-grids-->
+ 
+
+<!-- stats -->
+<section class=" py-5" id="stats">
+    <div class="container">
+        <div class="row stats-con">
+            <div class="col-md-3 col-6 stats_info counter_grid">
+                <p class="counter">2</p>
+                <h3>Datasets used</h3>
+            </div>
+            <div class="col-md-3 col-6 stats_info counter_grid1">
+                <p class="counter">200</p>
+                <h3>Datasets categories</h3>
+            </div>
+            <div class="col-md-3 col-6 stats_info counter_grid mt-md-0 mt-4">
+                <p class="counter">9000</p>
+                <h3>Datasets Files</h3>
+            </div>
+            <div class="col-md-3 col-6 stats_info counter_grid2 mt-md-0 mt-4">
+                <p class="counter">200 </p>
+                <h3>Datasets Size (Mb)</h3>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- footer-28 block -->
+<section class="w3l-footer">
+  <footer class="footer-28">
+    <div class="footer-bg-layer">
+      <div class="container py-lg-3">
+        <div class="row footer-top-28">
+          <div class="col-lg-5 footer-list-28 mt-5">
+            <h6 class="footer-title-28">Contact information</h6>
+            <ul>
+              <li>
+                <p><strong>Address</strong> :Tangier</p>
+              </li>
+              <li>
+                <p><strong>Phone</strong> : <a href="tel:+(212) 6000000">+(212) 6000000</a></p>
+              </li>
+              <li>
+                <p><strong>Email</strong> : <a href="mailto:example@mail.com">example@mail.com</a></p>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-7">
+            <div class="row">
+              <div class="col-sm-4 col-6 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Company</h6>
+                <ul>
+                  <li><a href="#about">About Company</a></li>
+                  <li><a href="#latest">Latest Blog Posts</a></li>
+                  <li><a href="#ser">Our Services</a></li>
+                  <li><a href="#job">Job Opportunities</a></li>
+                </ul>
+              </div>
+              <div class="col-sm-4 col-6 footer-list-28 mt-5">
+                <h6 class="footer-title-28">Quick Links</h6>
+                <ul>
+                  <li><a href="#contact">Get in touch</a></li>                                 
+                  <li><a href="#feedback">Site Feedack</a></li>
+                </ul>
+              </div>
+           
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="Shape" name = "mycheckbox" />
-        <label class="form-check-label" for="inlineCheckbox3">Shape descriptor</label>
+
+
+      <div class="midd-footer-28 align-center py-4 mt-5">
+        <div class="container">
+            <p class="copy-footer-28 text-center"> &copy; 2021 Copyright. All Rights Reserved.</p>
+        </div>
       </div>
-      <button type="submit" class="btn btn-primary">Search !</button>
-</form>
+    </div>
+    <!-- move top -->
+    <button onclick="topFunction()" id="movetop" title="Go to top">
+      <span class="fa fa-angle-up"></span>
+    </button>
+    <script>
+      // When the user scrolls down 20px from the top of the document, show the button
+      window.onscroll = function () {
+        scrollFunction()
+      };
 
+      function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+          document.getElementById("movetop").style.display = "block";
+        } else {
+          document.getElementById("movetop").style.display = "none";
+        }
+      }
 
-{% endblock %}
+      // When the user clicks on the button, scroll to the top of the document
+      function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
+      function cbirStart(){
+          
+          $('#features')[0].scrollIntoView(true);
+        
+      }
+    </script>
+    <!-- /move top -->
+  </footer>
 
-{% block script %}
-<script>
-    function filesize(elem){
-        document.cookie = `filesize=${elem.files[0].size}`; // Send the size of picture as a cookie
-    }
-</script>
+  <script src="assets/js/jquery-3.3.1.min.js"></script> <!-- Common jquery plugin -->
 
-{% endblock %}
+  <script src="assets/js/theme-change.js"></script><!-- theme switch js (light and dark)-->
+
+    <!-- libhtbox -->
+    <script src="assets/js/lightbox-plus-jquery.min.js"></script>
+    <!-- libhtbox -->
+    
+  <!-- stats number counter-->
+  <script src="assets/js/jquery.waypoints.min.js"></script>
+  <script src="assets/js/jquery.countup.js"></script>
+  <script>
+    $('.counter').countUp();
+  </script>
+  <!-- //stats number counter -->
+
+  <!--/MENU-JS-->
+  <script>
+    $(window).on("scroll", function () {
+      var scroll = $(window).scrollTop();
+
+      if (scroll >= 80) {
+        $("#site-header").addClass("nav-fixed");
+      } else {
+        $("#site-header").removeClass("nav-fixed");
+      }
+    });
+
+    //Main navigation Active Class Add Remove
+    $(".navbar-toggler").on("click", function () {
+      $("header").toggleClass("active");
+    });
+    $(document).on("ready", function () {
+      if ($(window).width() > 991) {
+        $("header").removeClass("active");
+      }
+      $(window).on("resize", function () {
+        if ($(window).width() > 991) {
+          $("header").removeClass("active");
+        }
+      });
+    });
+  </script>
+  <!--//MENU-JS-->
+
+  <!-- disable body scroll which navbar is in active -->
+  <script>
+    $(function () {
+        $('.dropify').dropify();
+      $('.navbar-toggler').click(function () {
+        $('body').toggleClass('noscroll');
+      })
+    });
+  </script>
+  <!-- //disable body scroll which navbar is in active -->
+  
+  <!--bootstrap-->
+  <script src="assets/js/bootstrap.min.js"></script>
+
+  <!--Dropify-->
+  <script src="assets/js/dropify.js"></script>
+  </body>
+
+  </html>

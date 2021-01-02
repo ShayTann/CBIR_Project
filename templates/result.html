@@ -1,20 +1,106 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
 
-{% block head %}
-<title> CBIR Web APP</title>
-{% endblock %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/galery-starter.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style-starter.css')}}">
 
-{% block body %}
-<h2> This is the content result page </h2>
-Image Input :  
-<img src="{{ url_for('static',filename='img/uploads/'+input_file)}}">
-<br>
-Result Images : 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <header id="site-header" class="fixed-top">
+      <section class="w3l-header-4">
+          <div class="container">
+              <nav class="navbar navbar-expand-lg navbar-light">
+                  <h1><a class="navbar-brand" href="index.html"><span class="fa fa-newspaper-o" aria-hidden="true"></span>
+                          CBIR<span>Project</span>
+                      </a></h1>
+                  
+    
+                  <div class="collapse navbar-collapse" id="navbarNav">
+                      <ul class="navbar-nav">
+                          <li class="nav-item active">
+                              <a class="nav-link" href="index.html">Home </a>
+                          </li>
+                          
+                      </ul>
+                      <ul class="navbar-nav search-right mt-lg-0 mt-2">
+                          <li class="nav-item mr-3" title="Search"><a href="#search" class="btn search-search">
+                                  <span class="fa fa-search" aria-hidden="true"></span></a></li>
+                          <li class="nav-item"><a href="contact.html"
+                                  class="btn btn-primary d-none d-lg-block btn-style mr-2">Contact Us</a></li>
+                      </ul>
+    
+                      <!-- //toggle switch for light and dark theme -->
+                      <!-- search popup -->
+                      <div id="search" class="pop-overlay">
+                          <div class="popup">
+                              <form action="#" method="GET" class="d-sm-flex">
+                                  <input type="search" placeholder="Rah makhedamx" name="search" required="required" autofocus>
+                                  <button type="submit">Search</button>
+                                  <a class="close" href="#url">&times;</a>
+                              </form>
+                          </div>
+                      </div>
+                      <!-- /search popup -->
+                  </div>
+                  <!-- toggle switch for light and dark theme -->
+                  <div class="mobile-position">
+                      <nav class="navigation">
+                          <div class="theme-switch-wrapper">
+                              <label class="theme-switch" for="checkbox">
+                                  <input type="checkbox" id="checkbox" >
+                                  <div class="mode-container">
+                                      <i class="gg-sun"></i>
+                                      <i class="gg-moon"></i>
+                                  </div>
+                              </label>
+                          </div>
+                      </nav>
+                  </div>
+              </nav>
+          </div>
+      </section>
+    </header>
+  
+    <div class="gallery-section">
+      <div class="inner-width">
+        <h1>Results</h1>
+        <div class="border"></div>
+        <div class="gallery">
+          {% for path,score in results %}
+          <div class="containers "> 
+          <a href="{{ url_for('static',filename='img/results/'+path)}}" class="image">
+            <img src="{{ url_for('static',filename='img/results/'+path)}}" alt=""></a>
+            {{ score }}
+            <button class="btn btn-success">Good Result</button> 
+            <button class="btn btn-danger">Bad Result</button> 
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
 
-{% for path in paths_results %}
 
-<img class="img-fluid" style="width: 200px;height:200px;" src="{{ url_for('static',filename='img/results/'+path)}}">
+  <script>
+    $(".gallery").magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery:{
+        enabled: true
+      }
+    });
+    $( ".btnn" ).click(function(){
+      alert('ba9i akahadmx')
 
-{% endfor %}
+    })
+    
+  </script>
 
-{% endblock %}
+  </body>
+</html>

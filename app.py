@@ -87,15 +87,17 @@ def results(filename,descriptors):
     print(descriptors)
     results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors)
     paths_results = []
+    score_results = []
     for i,(score,resultID) in enumerate(results) : 
     #Load the result image 
         print(i,": ",resultID)
         newfile = str(i+1)+".jpg"
         paths_results.append(newfile)
+        score_results.append(score)
         copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
         # print(os.path.join(app.config['IMAGE_RESULTS'],(str(i+1),'.jpg')))
 
-    return render_template('result.html',input_file=input_file,paths_results=paths_results)
+    return render_template('result.html',input_file=input_file,results=zip(paths_results,score_results))
 
 # No caching at all for API endpoints.
 @app.after_request
