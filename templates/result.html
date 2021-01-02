@@ -77,19 +77,19 @@
         <h1>Results</h1>
         <div class="border"></div>
         <div class="gallery">
-          <form action="/" method="POST" >
+          <form action="{{ request.path }} " method="POST" >
           {% for path,score in results %}
           <div class="containers "> 
           <a href="{{ url_for('static',filename='img/results/'+path)}}" class="image">
             <img src="{{ url_for('static',filename='img/results/'+path)}}" alt=""></a>
             {{ score }}
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="checkbox" id="{{path}}" name='checkgood' value="{{path}}" style="  -webkit-appearance:checkbox;">
+              <input class="form-check-input" type="checkbox" id="{{path}}" name='checkgood' value="{{path}},{{score}}" style="  -webkit-appearance:checkbox;">
               <label class="form-check-label" for="{{path}}">Good Result</label>
             </div>
           </div>
           {% endfor %}
-          <button type="submit" class="btn btn-info btn-style" name='again' value='search_again'>Try again !</button>
+          <button type="submit" class="btn btn-info btn-style" >Try again !</button>
         </form>
         </div>
       </div>

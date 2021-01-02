@@ -71,11 +71,6 @@ def index():
 
 @app.route('/results/<filename>/<descriptors>',methods=['POST','GET'])
 def results(filename,descriptors):
-    if request.method == 'POST':
-        print("In if condition")
-        print(request.form.getlist('checkgood'))
-        return 'Test'
-    
     input_file = filename
     cd = ColorDescriptor((8,12,3)) #Use same number of bins in the index.py
     td = TextureDescriptor()
@@ -90,19 +85,44 @@ def results(filename,descriptors):
     searcher = Searcher(os.path.join(app.config['IMAGE_INDEX'],"color.csv"),os.path.join(app.config['IMAGE_INDEX'],"texture.csv"),os.path.join(app.config['IMAGE_INDEX'],"shapes.csv"))
     descriptors = descriptors.split(',')
     print(descriptors)
-    results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors)
-    paths_results = []
-    score_results = []
-    for i,(score,resultID) in enumerate(results) : 
-    #Load the result image 
-        #print(i,": ",resultID)
-        newfile = str(i+1)+".jpg"
-        paths_results.append(newfile)
-        score_results.append(score)
-        copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
-        # print(os.path.join(app.config['IMAGE_RESULTS'],(str(i+1),'.jpg')))
+    if request.method == 'POST':
+        good_list = request.form.getlist('checkgood')
+        good_path = []
+        good_score = []
+        for elemen in good_list : 
+            good_path.append(elemen.split(',')[0])
+            good_score.append(elemen.split(',')[1]) 
 
-    return render_template('result.html',input_file=input_file,results=zip(paths_results,score_results))
+        results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors,w=[1/4,1/2,1/4])
+        paths_results = []
+        score_results = []
+        for i,(score,resultID) in enumerate(results) : 
+        #Load the result image 
+            #print(i,": ",resultID)
+            newfile = str(i+1)+".jpg"
+            paths_results.append(newfile)
+            score_results.append(score)
+            copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
+            # print(os.path.join(app.config['IMAGE_RESULTS'],(str(i+1),'.jpg')))
+        good_path.extend(paths_results)
+        good_score.extend(score_results)
+        good_path = list(dict.fromkeys(good_path))[:10]
+        good_score = list(dict.fromkeys(good_score))[:10]
+        return render_template('result.html',input_file=input_file,results=zip(good_path,good_score))
+    else :
+        results = searcher.search(features_color,feature_texture,feature_shape,descriptors=descriptors)
+        paths_results = []
+        score_results = []
+        for i,(score,resultID) in enumerate(results) : 
+        #Load the result image 
+            #print(i,": ",resultID)
+            newfile = str(i+1)+".jpg"
+            paths_results.append(newfile)
+            score_results.append(score)
+            copyfile(os.path.join(app.config['IMAGE_DATASET'],resultID),os.path.join(app.config['IMAGE_RESULTS'],newfile))
+            # print(os.path.join(app.config['IMAGE_RESULTS'],(str(i+1),'.jpg')))
+
+        return render_template('result.html',input_file=input_file,results=zip(paths_results,score_results))
 
 # contact route
 @app.route('/contact')
