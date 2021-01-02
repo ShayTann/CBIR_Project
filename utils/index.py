@@ -22,7 +22,7 @@ cd = ColorDescriptor((8,12,3))
 td = TextureDescriptor()
 sd = ShapeDescriptor()
 
-output_color = open(args["color"],"w") #Output file for every descritpor
+output_color = open(args["color"],"w") #Output file for every descriptor
 output_texture = open(args["texture"],"w")
 output_shape = open(args["shape"],"w")
 
@@ -38,8 +38,9 @@ for imagePath in glob.glob(args["dataset"] + "/*.jpg"):
     features_texture = td.lbp(image_grey)         #np.concatenate([features, td.lbp(image_grey)])
     features_shape = sd.extractFeatures(image_grey)  #np.concatenate([features, sd.extractFeatures(image_grey)])
     #Save our features into a file .
-    #Every feature is 288 entries , with the 5 regions we gonna have 1440 dimensionality for each picture
-    features_color = [str(f) for f in features_color] 
+    #Every feature is 288 entries , with the 5 regions we gonna have 1440 dimensionality for each picture (Color descriptor)
+    #We gonna create a list of features for every descriptor then save it into a csv file dedicated for each descriptors
+    features_color = [str(f) for f in features_color]  
     features_texture = [str(f) for f in features_texture] 
     features_shape = [str(f) for f in features_shape] 
     output_color.write("%s,%s\n" %(imageID,",".join(features_color)))

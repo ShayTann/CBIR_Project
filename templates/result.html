@@ -82,8 +82,9 @@
           <div class="containers "> 
           <a href="{{ url_for('static',filename='img/results/'+path)}}" class="image">
             <img src="{{ url_for('static',filename='img/results/'+path)}}" alt=""></a>
-            {{ score }}
-            <div class="form-check form-check-inline">
+            Score de similarité : {{ score }}
+            <div class="form-check form-check-inline" style="margin-left:20px">
+              Feed-Back : 
               <input class="form-check-input" type="checkbox" id="{{path}}" name='checkgood' value="{{path}},{{score}}" style="  -webkit-appearance:checkbox;">
               <label class="form-check-label" for="{{path}}">Good Result</label>
             </div>

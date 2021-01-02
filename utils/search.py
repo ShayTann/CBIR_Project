@@ -5,6 +5,8 @@ from searcher import Searcher
 import argparse
 import cv2
 
+#Reminder : We won't be using this file since we gonna call the searcher this from flask, this was just for the test
+
 ap = argparse.ArgumentParser()
 ap.add_argument("-c","--color",required = True , help="Path to where the computed index will be stored")
 ap.add_argument("-t","--texture",required = True , help="Path to where the computed index will be stored")
@@ -24,11 +26,10 @@ query_grey = cv2.cvtColor(query, cv2.COLOR_BGR2GRAY)
 features_color = cd.describe(query)
 feature_texture = td.lbp(query_grey)
 feature_shape = sd.extractFeatures(query_grey)
-#features = np.concatenate([features, td.lbp(image_gry)])
-#features = np.concatenate([features, sd.extractFeatures(image_gry)])
+
 
 #Search for similairs pictures using the searcher.py
-searcher = Searcher(args["color"],args["texture"],args["shape"])
+searcher = Searcher(args["color"],args["texture"],args["shape"]) 
 results = searcher.search(features_color,feature_texture,feature_shape)
 
 #Display the given image : 

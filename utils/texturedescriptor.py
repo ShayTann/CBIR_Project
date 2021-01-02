@@ -1,6 +1,5 @@
 import numpy as np
 from scipy import ndimage as ndi
-from skimage.filters import gabor_kernel
 import skimage
 
 
@@ -26,29 +25,4 @@ class TextureDescriptor:
 
 		return hist
 
-	# We can also use Gabor descriptor, its will give us almost the same result as the Local
-	# Binany descriptor
-	def gaborDescriptor(self,img):
-		""" Apply Gabor filter
-		        :param img: grayscale image
-		    """
-
-		kernels = []
-		#theta: desired orientation for feature extraction
-		for theta in range(4):
-			theta = theta / 4. * np.pi
-			#sigma: standard deviation of gaussian
-			for sigma in (1, 3):
-				for frequency in (0.05, 0.25):
-					kernel = np.real(gabor_kernel(frequency, theta=theta,
-												  sigma_x=sigma,
-												  sigma_y=sigma))
-					kernels.append(kernel)
-
-		feats = np.zeros((len(kernels), 2), dtype=np.double)
-		for k, kernel in enumerate(kernels):
-			filtered = ndi.convolve(img, kernel, mode='wrap')
-			feats[k, 0] = filtered.mean()
-			feats[k, 1] = filtered.var()
-
-		return np.hstack((feats[:, 0].ravel(), feats[:, 1].ravel())).ravel()
+	

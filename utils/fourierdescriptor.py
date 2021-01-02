@@ -10,14 +10,14 @@ class ShapeDescriptor:
     def findOutline(self,image, find_thresh=True):
         # when find thresh is set to FALSE, then the image is the threshold image and we just set thresh_image to image
         if find_thresh:
-            _, thresh_image = cv2.threshold(image, 30, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+            _, thresh_image = cv2.threshold(image, 30, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU) #Look for threshold  
         else:
             thresh_image = image.copy()
 
-        img_floodfill = thresh_image.copy()
-        h, w = thresh_image.shape[:2]
+        img_floodfill = thresh_image.copy() #Create a copy
+        h, w = thresh_image.shape[:2]  #Get the height and weight
 
-        contour, _ = cv2.findContours(thresh_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        contour, _ = cv2.findContours(thresh_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) #We're looking for shapes
 
         contour = max(contour, key=cv2.contourArea)
 
@@ -56,7 +56,7 @@ class ShapeDescriptor:
 
         return self.normalise(magnitudes)
 
-    def extractFeatures(self,image, find_thresh=True):
+    def extractFeatures(self,image, find_thresh=True): #Main function that compute our fourier descriptor
 
         contour = self.findOutline(image, find_thresh=find_thresh)
 
